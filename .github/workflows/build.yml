@@ -26,7 +26,6 @@ jobs:
     env:
       WRT_SOURCE_DIR: /mnt/ax6600-daed/source
       WRT_BUILDER_DIR: /mnt/ax6600-daed/builder
-      WRT_LUCI_DIR: /mnt/ax6600-daed/luci-daed
       BUILD_MODE: ${{ inputs.mode }}
       CCACHE_DIR: /mnt/ax6600-daed/ccache
     steps:

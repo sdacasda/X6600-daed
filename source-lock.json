@@ -21,8 +21,9 @@
     {
       "name": "luci",
       "repo": "immortalwrt/luci",
-      "commit": "3791919f3eee317a59d4bebc5bea14a3fd9c9089",
-      "date": "2026-09-17T05:02:55Z"
+      "commit": "830486a7e412a83f233e9c18bd1eb3668212c799",
+      "date": "2026-09-09T00:52:30Z",
+      "provenance": "Resolved from original published manifest LuCI version suffix 830486a; includes daed, arpbind and autoreboot."
     },
     {
       "name": "routing",
@@ -43,12 +44,7 @@
       "date": "2026-09-17T00:04:48Z"
     }
   ],
-  "feeds_provenance": "Latest commit by 2026-09-17T09:45:26Z; selected baseline, not proven original build feed SHAs.",
-  "luci_daed": {
-    "repo": "immortalwrt/luci",
-    "commit": "adc898b447eb4ee8023398182f5d0de2e8817e81",
-    "path": "applications/luci-app-daed"
-  },
+  "feeds_provenance": "LuCI resolved from original manifest; other standard feeds selected by latest commit before 2026-09-17T09:45:26Z, not proven original SHAs.",
   "external": [
     {
       "name": "openclash",

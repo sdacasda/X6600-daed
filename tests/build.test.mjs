@@ -25,7 +25,7 @@ function fixture(t) {
 test('baseline checksum and every repository revision are fixed',()=>{
   const digest=crypto.createHash('sha256').update(fs.readFileSync(path.join(repo,'config/plus-original.config'))).digest('hex');
   assert.equal(digest,lock.original_config_sha256);
-  for(const p of [lock.builder,lock.firmware,lock.luci_daed,...lock.feeds,...lock.external]) {
+  for(const p of [lock.builder,lock.firmware,...lock.feeds,...lock.external]) {
     assert.match(p.repo,/^[\w.-]+\/[\w.-]+$/);
     assert.match(p.commit,/^[a-f0-9]{40}$/);
   }
@@ -49,5 +49,6 @@ for(const removed of ['dockerd','kmod-ath11k'])test(`CLI refuses a dropped ${rem
   const result=call('verify-artifacts');
   assert.notEqual(result.status,0);
   assert.ok(result.stderr.includes(`CONFIG_PACKAGE_${removed}`),result.stderr);
+  assert.ok(fs.existsSync(path.join(root,'reports','effective.config')));
   assert.equal(fs.existsSync(path.join(root,'artifacts')),false);
 });

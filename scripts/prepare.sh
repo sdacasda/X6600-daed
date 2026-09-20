@@ -4,7 +4,6 @@ set -euo pipefail
 repo_root="$(cd "$(dirname "$0")/.." && pwd)"
 export WRT_SOURCE_DIR="${WRT_SOURCE_DIR:-$repo_root/.work/source}"
 export WRT_BUILDER_DIR="${WRT_BUILDER_DIR:-$repo_root/.work/builder}"
-export WRT_LUCI_DIR="${WRT_LUCI_DIR:-$repo_root/.work/luci-daed}"
 mkdir -p "$repo_root/reports"
 node "$repo_root/scripts/build.mjs" sources > "$repo_root/reports/sources.tsv"
 
@@ -12,7 +11,6 @@ while IFS=$'\t' read -r name url revision sparse_path; do
   case "$name" in
     source) checkout_dir="$WRT_SOURCE_DIR" ;;
     builder) checkout_dir="$WRT_BUILDER_DIR" ;;
-    luci-daed) checkout_dir="$WRT_LUCI_DIR" ;;
     *) echo "Unexpected source name: $name" >&2; exit 1 ;;
   esac
   if [ -e "$checkout_dir" ]; then

@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { parseConfig, mergeConfig, requireConfig, requireKernel, requireBtf,
-  requireFirmware, requireManifest, patchPackages, relocateLuci } from '../scripts/guards.mjs';
+  requireFirmware, requireManifest, patchPackages } from '../scripts/guards.mjs';
 
 test('overlay replaces disabled keys and preserves unrelated PLUS settings', () => {
   const result = mergeConfig('CONFIG_PACKAGE_dockerd=y\n# CONFIG_KERNEL_KPROBES is not set\nCONFIG_KERNEL_DEBUG_INFO_REDUCED=y\n',
@@ -61,8 +61,4 @@ test('external plugin patch requires the exact upstream clone instruction', () =
   assert.match(patched,/'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa'/);
   assert.throws(()=>patchPackages('echo changed upstream',[]),/clone instruction/);
   assert.throws(()=>patchPackages(original,[{repo:'owner/pkg',commit:'main'}]),/commit/);
-});
-test('standalone LuCI app resolves the pinned feed build include', () => {
-  assert.equal(relocateLuci('include ../../luci.mk\n'), 'include $(TOPDIR)/feeds/luci/luci.mk\n');
-  assert.throws(()=>relocateLuci('include changed.mk\n'),/include changed/);
 });

@@ -34,11 +34,6 @@ export function requireKernel(text) {
 export function requireBtf(sections) {
   if (!/\]\s+\.BTF\s+/.test(sections)) throw new Error('vmlinux has no .BTF ELF section');
 }
-export function relocateLuci(text) {
-  const marker = 'include ../../luci.mk';
-  if (text.split(marker).length !== 2) throw new Error('LuCI makefile include changed');
-  return text.replace(marker, 'include $(TOPDIR)/feeds/luci/luci.mk');
-}
 export function requireFirmware(kernel, metadata, limit) {
   if (!Number.isSafeInteger(limit) || limit <= 0) throw new Error('Invalid kernel size limit');
   if (kernel.length > limit) throw new Error(`Kernel size ${kernel.length} exceeds ${limit} bytes`);

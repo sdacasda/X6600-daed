@@ -20,10 +20,10 @@
 - 固件源码：`ones20250/immortalwrt_ipq`，提交 `86645e0f52ddffa33677bf79ea34121c1eaefd28`。
 - daed：`1.27.0`，沿用 ImmortalWrt 的 Go/BPF 构建、Web 资源校验和 procd 服务。
 - 保留原完整配置，校验原有 547 个启用的软件包及功能选项，并用原发布 manifest 检查编译后的软件包。若新源码使选项失效，构建会停止并报告，而不是静默删减 PLUS 功能。
-- 标准 feeds 选择原发布时刻之前的提交作为候选基线；原发布没有提供全部 feeds 的提交记录，因此**不宣称逐字节复现原固件**。只从另一个固定 LuCI 提交移入 `luci-app-daed`，不整体更新 LuCI。
+- LuCI 使用原发布 manifest 版本号 `830486a` 追溯到的提交 `830486a7e412a83f233e9c18bd1eb3668212c799`，该版本已包含 daed、IP/MAC 绑定和定时重启页面。其他标准 feeds 选择原发布时刻之前的提交作为候选基线；原发布没有提供全部 feeds 的提交记录，因此**不宣称逐字节复现原固件**。
 - 所有仓库提交写在 [source-lock.json](source-lock.json)。GitHub runner、apt 工具和 Actions 主版本标签仍可能更新；完整环境不属于位级可复现构建。
 
-详见 [依赖核对报告](docs/research.md)。该报告的初始调查时间早于本构建脚本；当前候选 feeds 和 LuCI 导入策略以本 README 和锁文件为准。
+详见 [依赖核对报告](docs/research.md)。该报告的初始调查时间早于本构建脚本；当前 feeds 选择以本 README 和锁文件为准。
 
 ## 检查与默认行为
 

@@ -4,13 +4,12 @@ import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
 import { parseConfig, mergeConfig, requireConfig, requireKernel, requireBtf,
-  requireFirmware, requireManifest, patchPackages, relocateLuci } from './guards.mjs';
+  requireFirmware, requireManifest, patchPackages } from './guards.mjs';
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const lock = JSON.parse(fs.readFileSync(path.join(root,'source-lock.json'),'utf8'));
 const source = path.resolve(process.env.WRT_SOURCE_DIR || path.join(root,'.work','source'));
 const upstream = path.resolve(process.env.WRT_BUILDER_DIR || path.join(root,'.work','builder'));
-const luci = path.resolve(process.env.WRT_LUCI_DIR || path.join(root,'.work','luci-daed'));
 const reports = path.join(root,'reports');
 const deliver = path.join(root,'artifacts');
 const read = p => fs.readFileSync(p,'utf8');
@@ -27,10 +26,11 @@ function configuration() {
 }
 function verifyConfig() {
   const actual=configuration();
+  // Keep diagnostic evidence even when a guard fails.
+  fs.writeFileSync(path.join(reports,'effective.config'),actual);
   requireConfig(actual,overlay());
   requireConfig(actual,preserve());
   requireConfig(actual,'CONFIG_TARGET_qualcommax=y\nCONFIG_TARGET_qualcommax_ipq60xx=y\nCONFIG_TARGET_DEVICE_qualcommax_ipq60xx_DEVICE_jdcloud_re-cs-02=y\nCONFIG_USE_LLVM_HOST=y\nCONFIG_NEED_BPF_TOOLCHAIN=y\nCONFIG_DWARVES=y\n');
-  fs.writeFileSync(path.join(reports,'effective.config'),actual);
   const before=parseConfig(read(path.join(root,'config','plus-original.config')));
   const after=parseConfig(actual);
   const changed=[...new Set([...before.keys(),...after.keys()])].filter(k=>before.get(k)!==after.get(k))
@@ -41,7 +41,7 @@ function verifyConfig() {
 fs.mkdirSync(reports,{recursive:true});
 const mode=process.argv[2];
 if(mode==='sources') {
-  for(const [name,obj] of [['source',lock.firmware],['builder',lock.builder],['luci-daed',lock.luci_daed]]) {
+  for(const [name,obj] of [['source',lock.firmware],['builder',lock.builder]]) {
     if(!/^[\w.-]+\/[\w.-]+$/.test(obj.repo)||!/^[a-f0-9]{40}$/.test(obj.commit)) throw new Error('Invalid source lock');
     console.log([name,`https://github.com/${obj.repo}.git`,obj.commit,obj.path||''].join('\t'));
   }
@@ -56,7 +56,6 @@ if(mode==='sources') {
   fs.copyFileSync(path.join(root,'source-lock.json'),path.join(reports,'source-lock.json'));
 } else if(mode==='customize') {
   assertRevision(upstream,lock.builder.commit);
-  assertRevision(luci,lock.luci_daed.commit);
   for(const p of [...lock.feeds,lock.external.find(p=>p.name==='passwall_packages')]) assertRevision(path.join(source,'feeds',p.name),p.commit);
   const baseline=path.join(root,'config','plus-original.config');
   if(hash(baseline)!==lock.original_config_sha256) throw new Error('Original PLUS config checksum changed');
@@ -64,12 +63,7 @@ if(mode==='sources') {
   if(hash(makefile)!==lock.daed.makefile_sha256) throw new Error('daed package definition changed');
   const patched=patchPackages(read(path.join(upstream,'Scripts','Packages.sh')),lock.external);
   fs.writeFileSync(path.join(reports,'Packages.pinned.sh'),patched.replace(/\r\n/g,'\n'));
-  // Copy only the reviewed app, without updating the entire original LuCI feed.
-  const destination=path.join(source,'package','luci-app-daed');
-  if(fs.existsSync(destination)||fs.existsSync(path.join(source,'feeds','luci','applications','luci-app-daed'))) throw new Error('Duplicate luci-app-daed source');
-  fs.cpSync(path.join(luci,lock.luci_daed.path),destination,{recursive:true});
-  const appMakefile=path.join(destination,'Makefile');
-  fs.writeFileSync(appMakefile,relocateLuci(read(appMakefile)));
+  if(!fs.existsSync(path.join(source,'feeds','luci','applications','luci-app-daed','Makefile'))) throw new Error('Pinned LuCI feed has no daed app');
   fs.writeFileSync(path.join(source,'.config'),mergeConfig(read(baseline),overlay()));
   const init=path.join(source,'files','etc','config');
   fs.mkdirSync(init,{recursive:true});
