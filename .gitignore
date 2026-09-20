@@ -1,0 +1,5 @@
+.work/
+reports/
+artifacts/
+package-versions.txt
+node_modules/

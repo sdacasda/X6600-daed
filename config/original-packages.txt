@@ -1,0 +1,5 @@
+openclash vernesong/OpenClash master c3a33c1
+passwall2 Openwrt-Passwall/openwrt-passwall2 main 9ee2b2b
+partexp sirpdboy/luci-app-partexp main 236187c
+viking ones20250/packages main f972b20
+passwall_packages(feed) Openwrt-Passwall/openwrt-passwall-packages main 03c57c1

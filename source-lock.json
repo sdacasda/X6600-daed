@@ -1,0 +1,88 @@
+{
+  "schema": 1,
+  "board": "jdcloud,re-cs-02",
+  "target": "qualcommax/ipq60xx",
+  "kernel_limit_bytes": 6291456,
+  "builder": {
+    "repo": "ones20250/Openwrt-AX6600",
+    "commit": "6a49eb74045f58514f6986daaf40201cbd0160ee"
+  },
+  "firmware": {
+    "repo": "ones20250/immortalwrt_ipq",
+    "commit": "86645e0f52ddffa33677bf79ea34121c1eaefd28"
+  },
+  "feeds": [
+    {
+      "name": "packages",
+      "repo": "immortalwrt/packages",
+      "commit": "8509f551edb7beb4a6324afca4d84b2bea404b66",
+      "date": "2026-09-03T08:23:30Z"
+    },
+    {
+      "name": "luci",
+      "repo": "immortalwrt/luci",
+      "commit": "3791919f3eee317a59d4bebc5bea14a3fd9c9089",
+      "date": "2026-09-17T05:02:55Z"
+    },
+    {
+      "name": "routing",
+      "repo": "openwrt/routing",
+      "commit": "4b9891b9136259f93294a424507ed24c5e8c1cbd",
+      "date": "2026-08-11T11:30:36Z"
+    },
+    {
+      "name": "telephony",
+      "repo": "openwrt/telephony",
+      "commit": "5d68d53c160a325ea9d03fce393e051573bcc736",
+      "date": "2026-07-13T21:33:54Z"
+    },
+    {
+      "name": "video",
+      "repo": "openwrt/video",
+      "commit": "aa4a28522c9005cd8478742b1de8a58863cb8f3b",
+      "date": "2026-09-17T00:04:48Z"
+    }
+  ],
+  "feeds_provenance": "Latest commit by 2026-09-17T09:45:26Z; selected baseline, not proven original build feed SHAs.",
+  "luci_daed": {
+    "repo": "immortalwrt/luci",
+    "commit": "adc898b447eb4ee8023398182f5d0de2e8817e81",
+    "path": "applications/luci-app-daed"
+  },
+  "external": [
+    {
+      "name": "openclash",
+      "repo": "vernesong/OpenClash",
+      "commit": "c3a33c1d3407956fdf8f0e0b7c1a4c52e6ad9593"
+    },
+    {
+      "name": "passwall2",
+      "repo": "Openwrt-Passwall/openwrt-passwall2",
+      "commit": "9ee2b2b7d31b4a9193e6615b83e1ca93a395676e"
+    },
+    {
+      "name": "partexp",
+      "repo": "sirpdboy/luci-app-partexp",
+      "commit": "236187cfe4f1fab7f2dde5279ce378324c3e5f40"
+    },
+    {
+      "name": "viking",
+      "repo": "ones20250/packages",
+      "commit": "f972b202138dcd3be6153d238ba3ad747cb51972"
+    },
+    {
+      "name": "passwall_packages",
+      "repo": "Openwrt-Passwall/openwrt-passwall-packages",
+      "commit": "03c57c1255a72f09c06cb4866025e07491de7d53"
+    }
+  ],
+  "daed": {
+    "version": "1.27.0",
+    "commit": "06857f52c33cc3264aea9eb90431afbe8909073c",
+    "wing_commit": "6bb6a310ef3d98bea691fd5955cc703306835546",
+    "core_commit": "7e67e31e241a6d2cc5f2b5ff228b4fb5faf6d24a",
+    "web_sha256": "da8755fb2cabfab392854e807e385b12d9e9842d6c8b5e347284d1ae0e582bfc",
+    "makefile_sha256": "534664dac1d21afaafb4703928985af5fa8f60e6a69f2d6f53226c6a6c05b048"
+  },
+  "original_config_sha256": "3e2969e13605269b54b221e69ac5de642d0d2c83187f41ce6f7daa20b15633bc"
+}
